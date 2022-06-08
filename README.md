@@ -1,22 +1,8 @@
-# *t5cine = A Black Ops Cinematic Mod*
+# *t5cine - A Black Ops Cinematic Mod*
 
 
-**A GSC modification for t5 to create cinematics**
+**A GSC modification for t5 to create cinematics.**
 
-<a href="https://discord.gg/wgRJDJJ"><img src="https://img.shields.io/discord/617736623412740146?label=Discord&style=flat-square"></a>
-<a href="https://github.com/sasseries/iw4-cine-mod/releases"><img src="https://img.shields.io/github/v/release/sasseries/iw4-cine-mod?label=Latest%20version&style=flat-square"></a>
-<a href="https://paypal.me/cxvl"><img src="https://img.shields.io/badge/Donate-Paypal-orange?style=flat-square"></a>
-
-This mod was designed for video editors who needs to create cinematics in the Multiplayer version of the game Call of Duty : Black Ops.
-
-It is not an external tool. This mod creates new variables (dvars) that executes a script when modified. This is not a game engine modification either. This is all done through scripting using GSC.
-
-<br/><br/>
-## Requirements
-
-In order to use this mod, you'll need a copy of Black Ops 1 with or without a client installed.
-
-<br/><br/>
 ## Installation
 
 Simply download the mod through [this link]([https://github.com/4GlVE/t5cine/releases/latest]). Scroll down and click on "Source code (zip)" and download the file.
@@ -31,6 +17,19 @@ C:/
             └── mp_t5cine
 ```
 
-Once this is done open your game, then click on the "Mods" tab. "Cinematic Mod" should appear in the list; click on it once and then click on "Launch" to restart your game with the mod on.
+Once this is done open your game, then click on the "Mods" tab. "mp_t5cine" should appear in the list; click on it once and then click on "Launch" to restart your game with the mod on.
+
+A list of commands can be found [here]
 
 <br/><br/>
+## To-Do List
+I know this mod is very bare bones and there is not much to it, but in time I will try to implement every part of Sass' mod into Black Ops.
+You can only spawn one bot at a time, and I have not yet implemented a way to kill the bot via command.
+* Add the ability to differentiate between bot names for ease of use with commands.
+* Add the ability to spawn bots and choosing "class" and "team".
+* Add "kill" command.
+* Add "vision" command.
+* Add "bot model" command.
+* Add "hold gun" command.
+* Add "score" command. // Similar to "mvm_score"
+* Add "killstreak command. // Similar to "mvm_killstreak"
