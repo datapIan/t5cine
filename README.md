@@ -33,3 +33,12 @@ You can only spawn one bot at a time, and I have not yet implemented a way to ki
 * Add "hold gun" command.
 * Add "score" command. // Similar to "mvm_score"
 * Add "killstreak command. // Similar to "mvm_killstreak"
+
+## Credits
+**Sass:** *Wouldnt be doing this kind of stuff today if it wasn't for him. // Thank you for allowing me to use your code for my mod and everything else you've done for me! Seriously, all the kindness you've shown me the past years/recently is very appreciated.*
+* [Github](https://github.com/sortileges/iw4cine)
+* [Twitter](https://twitter.com/sasseries)
+
+**Antiga:** *Helped me convert and make functions for t5. // Thank you for expanding my knowledge of coding and everything else you've done for me! You also smell.*
+* [Github](https://github.com/mprust)
+* [Twitter](https://twitter.com/mp_rust)
