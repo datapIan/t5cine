@@ -19,7 +19,7 @@ C:/
 
 Once this is done open your game, then click on the "Mods" tab. "mp_t5cine" should appear in the list; click on it once and then click on "Launch" to restart your game with the mod on.
 
-A list of commands can be found [here](https://github.com/4GlVE/t5cine/blob/main/commands.txt)
+A list of commands can be found [here](https://github.com/4GlVE/t5cine/blob/main/commands.md)
 
 <br/><br/>
 ## To-Do List
