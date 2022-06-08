@@ -5,7 +5,7 @@
 
 ## Installation
 
-Simply download the mod through [this link]([https://github.com/4GlVE/t5cine/releases/latest]). Scroll down and click on "Source code (zip)" and download the file.
+Simply download the mod through [this link]([https://github.com/4GlVE/t5cine/releases/latest]). Scroll down and click on `"Source code (zip)"` and download the file.
 
 Once the mod downloaded, open the ZIP file and drag the "mp_t5cine" folder into your `BO1/mods` folder. If the `mods` folder doesn't exist, create it.
 
