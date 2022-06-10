@@ -1,6 +1,11 @@
-# *t5cine - A Black Ops Cinematic Mod*
+# *t5cine - A Black Ops Cinematic Mod* <!-- omit in toc -->
 
 **A GSC modification for t5 to create cinematics.**
+
+- [Installation](#installation)
+- [Command List](#command-list)
+- [To-Do List](#to-do-list)
+- [Credits](#credits)
 
 ## Installation
 
@@ -20,23 +25,18 @@ Once this is done open your game, then click on the "Mods" tab. "mp_t5cine" shou
 
 ## Command List
 
-<details>
-  <summary>Command List</summary>
-
 > These commands are set using the onPlayerCommand function, therefore will not show in the console as a dvar.
 
-### Bot Commands
+### Bot Commands <!-- omit in toc -->
 * `mvm_bot_spawn` - This command allows you to spawn a bot.
 * `mvm_bot_setup` - If you want to change the position of your bot, then this is the command you need. The bot will also respawn to its new position if it gets killed.
 * `mvm_bot_stare` - This command will make the bot look at the host.
  
-### Misc Commands
+### Misc Commands <!-- omit in toc -->
 * `about` - Prints credits and information on the screen.
 * `clone` - Spawns a clone of yourself
 * `clearbodies` - Deletes all dead bodies
 * `mvm_eb_close` - Toggles on/off close explosive bullets
-
-</details>
 
 ## To-Do List
 I know this mod is very bare bones and there is not much to it, but in time I will try to implement every part of Sass' mod into Black Ops.
