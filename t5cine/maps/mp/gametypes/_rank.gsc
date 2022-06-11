@@ -117,6 +117,11 @@ init()
 	
 	// Setting some DVARs here
 	setDvar("scr_game_prematchperiod", "0");
+	setDvar( "scr_dm_winlimit", 0 );
+	setDvar( "scr_dm_timelimit", 0 );
+	setDvar( "scr_dm_scorelimit", 0 );
+	setDvar("g_gametype", "dm");
+	setDvar("ui_gametype", "Moviemaking");
 	
 	level thread onPlayerConnect();
 }
