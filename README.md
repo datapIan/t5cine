@@ -1,4 +1,5 @@
 # *t5cine - A Black Ops Cinematic Mod* <!-- omit in toc -->
+⚠️ Note: This mod isn't in alpha stage... it doesn't do anything yet,
 
 **A GSC modification for t5 to create cinematics.**
 
