@@ -1,26 +1,6 @@
 #include common_scripts\utility;
-// check if below includes are removable
 #include maps\mp\_utility;
 #include maps\mp\gametypes\_hud_util;
-
-
-// Sumeet/MikeD Note: How to add a weapon. "OFFLINE" mode only not, for now
-// 1. string_assets\class.str: 
-//		-Add/modify class.str for OFFLINE_CLASS# -- # being the desired number in the menu list.
-// 2. maps\mp\gametypes\_class.gsc: 
-//		-Add/modify level.classMap in init() to the corresponding CLASS#
-//		-Add/modify a load_default_loadout() with the corresponding CLASS#
-//		-If adding a new "weapon class" add to the if/else in weapon_class_register()
-// 3. share\raw\mp\offline_classTable.csv:
-//		-Add/modify the weapon and the appropiate attachments into this list
-// 4. share\raw\mp\statsTable.csv
-//		-Add/modify an entry in here with the corresponding weapon information.
-// 5. share\raw\ui_mp\scriptmenus\changeclass_offline.menu
-//		-Add/modify to the CHOICE_BUTTON_FOCUS section the appropiate CLASS#
-// 6. share\zone_source\common_mp_weapons.csv
-//		-Add the weapon
-// -- You may need to add a icon material to ui_mp.csv, which is referred to from the statsTable.csv
-
 init()
 {
 	level.classMap["smg_mp"] = "CLASS_SMG";
@@ -28,7 +8,6 @@ init()
 	level.classMap["assault_mp"] = "CLASS_ASSAULT";
 	level.classMap["lmg_mp"] = "CLASS_LMG";
 	level.classMap["sniper_mp"] = "CLASS_SNIPER";
-
 	level.classMap["offline_class1_mp"] = "OFFLINE_CLASS1";
 	level.classMap["offline_class2_mp"] = "OFFLINE_CLASS2";
 	level.classMap["offline_class3_mp"] = "OFFLINE_CLASS3";
@@ -40,22 +19,20 @@ init()
 	level.classMap["offline_class9_mp"] = "OFFLINE_CLASS9";
 	level.classMap["offline_class10_mp"] = "OFFLINE_CLASS10";	
 	
-	// AE 10-15-09: not sure if this is necessary but it's crashing the larry's
-	// COD5 Weapon test
-	//level.classMap["offline_class11_mp"] = "OFFLINE_CLASS11";	
 	
-	level.classMap["custom1"] = "CLASS_CUSTOM1";
-	level.classMap["custom2"] = "CLASS_CUSTOM2";
-	level.classMap["custom3"] = "CLASS_CUSTOM3";
-	level.classMap["custom4"] = "CLASS_CUSTOM4";
-	level.classMap["custom5"] = "CLASS_CUSTOM5";
-
-	level.classMap["prestige1"] = "CLASS_CUSTOM6";
-	level.classMap["prestige2"] = "CLASS_CUSTOM7";
-	level.classMap["prestige3"] = "CLASS_CUSTOM8";
-	level.classMap["prestige4"] = "CLASS_CUSTOM9";
-	level.classMap["prestige5"] = "CLASS_CUSTOM10";
-
+	
+	
+	
+	level.classMap["custom1"] = 0;
+	level.classMap["custom2"] = 1;
+	level.classMap["custom3"] = 2;
+	level.classMap["custom4"] = 3;
+	level.classMap["custom5"] = 4;
+	level.classMap["custom6"] = 5;
+	level.classMap["custom7"] = 6;
+	level.classMap["custom8"] = 7;
+	level.classMap["custom9"] = 8;
+	level.classMap["custom10"] = 9;
 	level.PrestigeNumber = 5;
 	
 	level.defaultClass = "CLASS_ASSAULT";
@@ -64,30 +41,24 @@ init()
 		level.weapons["frag"] = "frag_grenade_mp";
 	else	
 		level.weapons["frag"] = "";
-
 	if ( maps\mp\gametypes\_tweakables::getTweakableValue( "weapon", "allowsmoke" ) )
 		level.weapons["smoke"] = "smoke_grenade_mp";
 	else	
 		level.weapons["smoke"] = "";
-
 	if ( maps\mp\gametypes\_tweakables::getTweakableValue( "weapon", "allowflash" ) )
 		level.weapons["flash"] = "flash_grenade_mp";
 	else	
 		level.weapons["flash"] = "";
-
 	level.weapons["concussion"] = "concussion_grenade_mp";
-
-	// SRS 11/28/2007: changed c4 to satchel
+	
 	if ( maps\mp\gametypes\_tweakables::getTweakableValue( "weapon", "allowsatchel" ) )
 		level.weapons["satchel_charge"] = "satchel_charge_mp";
 	else	
 		level.weapons["satchel_charge"] = "";
-
 	if ( maps\mp\gametypes\_tweakables::getTweakableValue( "weapon", "allowbetty" ) )
 		level.weapons["betty"] = "mine_bouncing_betty_mp";
 	else	
 		level.weapons["betty"] = "";
-
 	if ( maps\mp\gametypes\_tweakables::getTweakableValue( "weapon", "allowrpgs" ) )
 	{
 		level.weapons["rpg"] = "rpg_mp";
@@ -99,7 +70,7 @@ init()
 	
 	create_class_exclusion_list();
 	
-	// initializes create a class settings
+	
 	cac_init();	
 	
 	load_default_loadout( "CLASS_SMG", 210 );
@@ -107,9 +78,8 @@ init()
 	load_default_loadout( "CLASS_ASSAULT", 200 );	
 	load_default_loadout( "CLASS_LMG", 220 );
 	load_default_loadout( "CLASS_SNIPER", 240 );
-
-	// generating weapon type arrays which classifies the weapon as primary (back stow), pistol, or inventory (side pack stow)
-	// using mp/statstable.csv's weapon grouping data ( numbering 0 - 149 )
+	
+	
 	level.primary_weapon_array = [];
 	level.side_arm_array = [];
 	level.grenade_array = [];
@@ -122,10 +92,10 @@ init()
 		if( !isdefined( level.tbl_weaponIDs[i] ) || level.tbl_weaponIDs[i]["reference"] == "" )
 			continue;		
 	
-		//statstablelookup( get_col, with_col, with_data )
-		weapon_type = level.tbl_weaponIDs[i]["group"]; //statstablelookup( level.cac_cgroup, level.cac_cstat, i );
-		weapon = level.tbl_weaponIDs[i]["reference"]; //statstablelookup( level.cac_creference, level.cac_cstat, i );
-		attachment = level.tbl_weaponIDs[i]["attachment"]; //statstablelookup( level.cac_cstring, level.cac_cstat, i );
+		
+		weapon_type = level.tbl_weaponIDs[i]["group"]; 
+		weapon = level.tbl_weaponIDs[i]["reference"]; 
+		attachment = level.tbl_weaponIDs[i]["attachment"]; 
 	
 		weapon_class_register( weapon+"_mp", weapon_type );	
 	
@@ -138,7 +108,7 @@ init()
 					weapon_class_register( weapon+"_"+attachment+"_mp", weapon_type );	
 				else
 				{
-					// multiple attachment options
+					
 					for( k = 0; k < attachment_tokens.size; k++ )
 						weapon_class_register( weapon+"_"+attachment_tokens[k]+"_mp", weapon_type );
 				}
@@ -152,7 +122,6 @@ init()
 	level thread onPlayerConnecting();
 	
 }
-
 create_class_exclusion_list()
 {
 	currentDvar = 0;
@@ -173,9 +142,7 @@ create_class_exclusion_list()
 		level.attachmentExclusions[ currentDvar ] = GetDvar( "attachment_exclusion_" + currentDvar );
 		currentDvar++;
 	}
-
 }
-
 is_item_excluded( itemIndex )
 {
 	numExclusions = level.itemExclusions.size;
@@ -190,7 +157,6 @@ is_item_excluded( itemIndex )
 	
 	return false;
 }
-
 is_attachment_excluded( attachment )
 {
 	numExclusions = level.attachmentExclusions.size;
@@ -205,15 +171,12 @@ is_attachment_excluded( attachment )
 	
 	return false;
 }
-
-// assigns default class loadout to team from datatable
 load_default_loadout( class, stat_num )
 {
-		// do not thread, tablelookup is demanding
+		
 		load_default_loadout_raw( "allies", class, stat_num );
 		load_default_loadout_raw( "axis", class, stat_num );
 }
-
 get_item_count( itemReference )
 {
 	itemCount = int( tableLookup( "mp/statsTable.csv", level.cac_creference, itemReference, level.cac_ccount ) );
@@ -224,7 +187,6 @@ get_item_count( itemReference )
 	
 	return itemCount;
 }
-
 getDefaultClassSlotWithExclusions( className, slotName )
 {
 	itemReference = GetDefaultClassSlot( className, slotName );
@@ -241,14 +203,14 @@ getDefaultClassSlotWithExclusions( className, slotName )
 	
 load_default_loadout_raw( team, class, stat_num )
 {
-	// give primary weapon and attachment
+	
 	level.classWeapons[team][class][0] = getDefaultClassSlotWithExclusions( class, "primary" ) + "_mp";
-	// TODO - Get default attachments working here MGORDON
 	
 	
-	// give secondary weapon and attachment
+	
+	
 	level.classSidearm[team][class] = getDefaultClassSlotWithExclusions( class, "secondary" ) + "_mp";
-	// TODO - Get default attachments working here MGORDON
+	
 	
 	primaryGrenadeRef = getDefaultClassSlotWithExclusions( class, "primarygrenade" );
 	level.classGrenades[class]["primary"]["type"] = primaryGrenadeRef + "_mp";
@@ -257,19 +219,17 @@ load_default_loadout_raw( team, class, stat_num )
 	secondaryGrenadeRef = getDefaultClassSlotWithExclusions( class, "specialgrenade" );
 	level.classGrenades[class]["secondary"]["type"] = secondaryGrenadeRef + "_mp";
 	level.classGrenades[class]["secondary"]["count"] = get_item_count( secondaryGrenadeRef );
-
 	equipmentRef = getDefaultClassSlotWithExclusions( class, "equipment" );
 	level.default_equipment[ class ][ "type" ] = equipmentRef + "_mp";
 	level.default_equipment[ class ][ "count" ] = get_item_count( secondaryGrenadeRef );
-
-	// give default class perks
+	
 	level.default_perk[class] = [];	
 	if ( GetDvarInt( #"scr_game_perks" ) )
 	{
 		currentSpecialty = 0;
 		for ( numSpecialties = 0; numSpecialties < 3; numSpecialties++ )
 		{
-			// first get the specialty index
+			
 			perkRef = getDefaultClassSlotWithExclusions( class, "specialty" + ( numSpecialties + 1 ) );
 			
 			if ( perkRef == "weapon_null" )
@@ -279,7 +239,7 @@ load_default_loadout_raw( team, class, stat_num )
 			else
 			{
 				specialty = level.perkReferenceToIndex[ perkRef ];
-				// validate and expand the specialty if it is a group
+				
 				specialties[currentSpecialty] = validatePerk( specialty, currentSpecialty );
 				storeDefaultSpecialtyData( class, specialties[currentSpecialty] );
 				level.default_perkIcon[class][ currentSpecialty ] = level.tbl_PerkData[ specialty ][ "reference_full" ];
@@ -298,8 +258,7 @@ load_default_loadout_raw( team, class, stat_num )
 	
 	level.classItem[team][class]["type"] = "";
 	level.classItem[team][class]["count"] = 0;
-
-	//default armor
+	
 	level.default_armor[class] = [];
 	level.default_armor[class]["body"] = getDefaultClassSlotWithExclusions( class, "body" );
 	level.default_armor[class]["head"] = getDefaultClassSlotWithExclusions( class, "head" );
@@ -316,37 +275,34 @@ weapon_class_register( weapon, weapon_type )
 		level.grenade_array[weapon] = 1;
 	else if( weapon_type == "weapon_explosive" )
 		level.inventory_array[weapon] = 1;
-	else if( weapon_type == "weapon_rifle" ) // COD5 WEAPON TEST
+	else if( weapon_type == "weapon_rifle" ) 
 		level.inventory_array[weapon] = 1;
 	else
 		assertex( false, "Weapon group info is missing from statsTable for: " + weapon_type );
 }
-
-
-// create a class init
 cac_init()
 {
-	// max create a class "class" allowed
+	
 	level.cac_size = 5;
 	
 	level.cac_max_item = 256;
 	
-	// init cac data table column definitions
-	level.cac_numbering = 0;	// unique unsigned int - general numbering of all items
-	level.cac_cstat = 1;		// unique unsigned int - stat number assigned
-	level.cac_cgroup = 2;		// string - item group name, "primary" "secondary" "inventory" "specialty" "grenades" "special grenades" "stow back" "stow side" "attachment"
-	level.cac_cname = 3;		// string - name of the item, "Extreme Conditioning"
-	level.cac_creference = 4;	// string - reference string of the item, "m203" "svt40" "bulletdamage" "c4"
-	level.cac_ccount = 5;		// signed int - item count, if exists, -1 = has no count
-	level.cac_cimage = 6;		// string - item's image file name
-	level.cac_cdesc = 7;		// long string - item's description
-	level.cac_cstring = 8;		// long string - item's other string data, reserved
-	level.cac_cint = 9;			// signed int - item's other number data, used for attachment number representations
-	level.cac_cunlock = 10;		// unsigned int - represents if item is unlocked by default
-	level.cac_cint2 = 11;		// signed int - item's other number data, used for primary weapon camo skin number representations
-	level.cac_cost = 12; // signed int - cost of the item
-	level.cac_slot = 13; // string - slot for the given item
-	level.cac_classified = 15;	// signed int - number of items of the class purchased need to unlock this weapon
+	
+	level.cac_numbering = 0;	
+	level.cac_cstat = 1;		
+	level.cac_cgroup = 2;		
+	level.cac_cname = 3;		
+	level.cac_creference = 4;	
+	level.cac_ccount = 5;		
+	level.cac_cimage = 6;		
+	level.cac_cdesc = 7;		
+	level.cac_cstring = 8;		
+	level.cac_cint = 9;			
+	level.cac_cunlock = 10;		
+	level.cac_cint2 = 11;		
+	level.cac_cost = 12; 
+	level.cac_slot = 13; 
+	level.cac_classified = 15;	
 	
 	for( i=0; i<13; i++ )
 	{
@@ -408,20 +364,17 @@ cac_init()
 			}
 		}
 	}
-
 	level.perkReferenceToIndex = [];
 	
 	level.perkNames = [];
 	level.perkIcons = [];
 	level.PerkData = [];
-
-	// allowed perks in each slot, for validation.
+	
 	level.allowedPerks[0] = [];
 	level.allowedPerks[1] = [];
 	level.allowedPerks[2] = [];
 	level.allowedPerks[3] = [];
-
-	// generating perk data vars collected form statsTable.csv
+	
 	for( i = 0; i < level.cac_max_item; i++ )
 	{
 		itemRow = tableLookupRowNum( "mp/statsTable.csv", level.cac_numbering, i );
@@ -471,31 +424,27 @@ cac_init()
 		}
 	}
 	
-
 	killStreakReferenceToIndex = [];
 	
 	level.killStreakNames = [];
 	level.killStreakIcons = [];
 	level.KillStreakData = [];
 	level.killStreakBaseValue = 202;
-
-	// allowed kill streak in each slot, for validation.
+	
 	level.allowedKillStreak[0] = [];
 	level.allowedKillStreak[1] = [];
 	level.allowedKillStreak[2] = [];
 	level.allowedKillStreak[3] = [];
 	level.allowedKillStreak[4] = [];
-
 	for( i = 0; i < 5; i++ )
 	{
-		level.allowedKillStreak[i][0] = level.killStreakBaseValue; // should be coded for null functionality
+		level.allowedKillStreak[i][0] = level.killStreakBaseValue; 
 	}
-
 	j = 1;
 	
 	level.killStreakBaseValue = undefined;
 	level.totalKillStreaks = 0;
-	// generating kill streak data vars collected form statsTable.csv
+	
 	for( i = 0; i < level.cac_max_item; i++ )
 	{
 		itemRow = tableLookupRowNum( "mp/statsTable.csv", level.cac_numbering, i );
@@ -543,7 +492,6 @@ cac_init()
 		}
 	}
 }
-
 getClassChoice( response )
 {
 	tokens = strtok( response, "," );
@@ -552,7 +500,6 @@ getClassChoice( response )
 	
 	return ( level.classMap[tokens[0]] );
 }
-
 getWeaponChoice( response )
 {
 	tokens = strtok( response, "," );
@@ -561,9 +508,6 @@ getWeaponChoice( response )
 	else
 		return 0;
 }
-
-// ============================================================================
-// obtains custom class setup from stat values
 cac_getdata( )
 {
 	if ( isDefined( self.cac_initialized ) )
@@ -574,7 +518,6 @@ cac_getdata( )
 	if( level.onlineGame )
 		getCacDataGroup( 5, 10 );
 }
-
 getLoadoutItemFromDDLStats( customClassNum, loadoutSlot )
 {
 	if ( customClassNum < 5 )
@@ -586,7 +529,6 @@ getLoadoutItemFromDDLStats( customClassNum, loadoutSlot )
 		classBaseName = "prestigeclass";
 		customClassNum = customClassNum - 5;
 	}
-
 	if ( !level.onlineGame )
 	{
 		return( self GetLoadoutItemFromProfile( classBaseName + ( customClassNum + 1 ), loadoutSlot ) );
@@ -601,7 +543,6 @@ getLoadoutItemFromDDLStats( customClassNum, loadoutSlot )
 	
 	return itemIndex;
 }
-
 getAttachmentString( weaponNum, attachmentNum )
 {
 	attachmentString = GetItemAttachment( weaponNum, attachmentNum );
@@ -617,8 +558,7 @@ getAttachmentString( weaponNum, attachmentNum )
 	
 	return attachmentString;
 }
-
-getFullWeaponName( customClassNum, weaponSlot, attachmentsDisabled ) // weaponSlot should be 'primary' or 'secondary'
+getFullWeaponName( customClassNum, weaponSlot, attachmentsDisabled ) 
 {
 	assertex( ( ( weaponSlot == "primary" ) || ( weaponSlot == "secondary" ) ), "weaponSlot should be primary or secondary" );
 	
@@ -670,7 +610,6 @@ getFullWeaponName( customClassNum, weaponSlot, attachmentsDisabled ) // weaponSl
 	
 	return weaponName;
 }
-
 getKillStreakNum( killstreakName )
 {
 	if ( level.onlineGame )
@@ -682,20 +621,17 @@ getKillStreakNum( killstreakName )
 		return( self GetLoadoutItemFromProfile( "", killstreakName ) );
 	}
 }
-
 setKillstreaks()
 {
 		killstreak1 = self getKillStreakNum( "killstreak1" );
 		killstreak2 = self getKillStreakNum( "killstreak2" );
 		killstreak3 = self getKillStreakNum( "killstreak3" );
-
-		// custom game mode killstreaks
+		
 		if( getDvarInt( "custom_killstreak_mode" ) == 2 )
 		{
 			killstreak1 = 0;
 			killstreak2 = 0;
 			killstreak3 = 0;
-
 			if( getDvarInt( "custom_killstreak_1" ) )
 			{
 				killstreak1 = getDvarInt( "custom_killstreak_1" );
@@ -718,18 +654,15 @@ setKillstreaks()
 		self.killstreak = [];
 		
 		assertex( isdefined( level.tbl_KillStreakData[killstreak1] ), "KillStreak #:"+killstreak1+"'s data is undefined" );
-		self.killstreak[ 0 ] = level.tbl_KillStreakData[killstreak1]["reference"]; //tablelookup( "mp/statstable.csv", level.cac_cstat, killstreak1, level.cac_cimage );
-
+		self.killstreak[ 0 ] = level.tbl_KillStreakData[killstreak1]["reference"]; 
 		assertex( isdefined( level.tbl_KillStreakData[killstreak2] ), "KillStreak #:"+killstreak2+"'s data is undefined" );
-		self.killstreak[ 1 ] = level.tbl_KillStreakData[killstreak2]["reference"]; //tablelookup( "mp/statstable.csv", level.cac_cstat, killstreak1, level.cac_cimage );
-
+		self.killstreak[ 1 ] = level.tbl_KillStreakData[killstreak2]["reference"]; 
 		assertex( isdefined( level.tbl_KillStreakData[killstreak3] ), "KillStreak #:"+killstreak3+"'s data is undefined" );
-		self.killstreak[ 2 ] = level.tbl_KillStreakData[killstreak3]["reference"]; //tablelookup( "mp/statstable.csv", level.cac_cstat, killstreak1, level.cac_cimage );
+		self.killstreak[ 2 ] = level.tbl_KillStreakData[killstreak3]["reference"]; 
 }
-
 is_warlord_perk( itemIndex )
 {
-	// Horrible hack for TU8 competition playlist - MGordon
+	
 	if ( ( itemIndex == 168 ) || ( itemIndex == 169 ) )
 	{
 		return true;
@@ -739,14 +672,12 @@ is_warlord_perk( itemIndex )
 		return false;
 	}
 }
-
 getCacDataGroup( cacRange, numClasses )
 {
 	for( i = cacRange; i < numClasses; i ++ )
 	{
 		primary_grenade = getLoadoutItemFromDDLStats ( i, "primarygrenade" );
 		primary_num = getLoadoutItemFromDDLStats ( i, "primary" );
-
 		specialty = [];
 		specialty[0] = getLoadoutItemFromDDLStats ( i, "specialty1" );
 		specialty[1] = getLoadoutItemFromDDLStats ( i, "specialty2" );
@@ -755,14 +686,11 @@ getCacDataGroup( cacRange, numClasses )
 		body = getLoadoutItemFromDDLStats( i, "body" );
 		assert( body >= level.armor_index_start );
 		assert( body <= level.armor_index_end );
-
 		body = level.tbl_armor[ body ];
 		assert( IsDefined( body ) );
-
 		head = getLoadoutItemFromDDLStats( i, "head" );
 		assert( head >= level.armor_index_start );
 		assert( head <= level.armor_index_end );
-
 		head = level.tbl_armor[ head ];
 		assert( IsDefined( head ) );
 		
@@ -770,30 +698,26 @@ getCacDataGroup( cacRange, numClasses )
 		
 		equipment = getLoadoutItemFromDDLStats ( i, "equipment" );
 		
-		//if ( camo_num < 0 || camo_num >= level.tbl_CamoSkin.size )
-		//{
-		//	iprintln( "^1Warning: (" + self.name + ") camo " + camo_num + " is invalid. Setting to none." );
-		//	camo_num = 0;
-		//}
 		
-		// apply the primary grenade details
-
-		// vahn commented this out so he could put other gear in the primary grenade stat 
-
-		// if ( primary_grenade < 100 )
-		// {
-		//	iprintln( "^1Warning: (" + self.name + ") primary grenade " + primary_grenade + " is invalid. Setting to frag." );
-		//	primary_grenade = 100;
-		// }
-
-		// builds the full primary grenade reference string
-		self.custom_class[i]["primary_grenades"] = level.tbl_weaponIDs[primary_grenade]["reference"]+"_mp"; //tablelookup( "mp/statstable.csv", level.cac_numbering, special_grenade, level.cac_creference ) + "_mp";
-		self.custom_class[i]["primary_grenades_count"] = level.tbl_weaponIDs[primary_grenade]["count"]; //int( tablelookup( "mp/statstable.csv", level.cac_numbering, special_grenade, level.cac_ccount ) );
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		self.custom_class[i]["primary_grenades"] = level.tbl_weaponIDs[primary_grenade]["reference"]+"_mp"; 
+		self.custom_class[i]["primary_grenades_count"] = level.tbl_weaponIDs[primary_grenade]["count"]; 
 		
 		
 		self.custom_class[i]["equipment_slot"] = level.tbl_weaponIDs[equipment]["reference"]+"_mp";
 		self.custom_class[i]["equipment_slot_count"] = level.tbl_weaponIDs[equipment]["count"];
-
 		attachmentsDisabled = false;
 		
 		for ( j = 0; j < specialty.size; j++ )
@@ -807,31 +731,19 @@ getCacDataGroup( cacRange, numClasses )
 		}
 		
 		classbonus = getLoadoutItemFromDDLStats( i, "classbonus" );
-
-		// OVERKILL - is currently disabled. 
-		// We have other weapons like Shotguns, Crossbows and Rocket launchers moved into the Side Arm category
-		// for now.
-		//
-		// Vahn 10/9/09
-		//
-		// if specialty2 is not Overkill, disallow anything besides pistols for secondary weapon
-//		if ( level.tbl_PerkData[specialty2]["reference_full"] != "specialty_twoprimaries" )
-//		{
-//			if ( level.tbl_weaponIDs[secondary_num]["group"] != "weapon_pistol" )
-//			{
-//				iprintln( "^1Warning: (" + self.name + ") secondary weapon is not a pistol but perk 2 is not Overkill. Setting secondary weapon to pistol." );
-//				secondary_num = 0;
-//				secondary_attachment_flag = 0;
-//			}
-//		}
-
-//TODO POSTPATCH INTEGRATION: need to switch to all of our attachments and weapons
-		// if certain attachments are used, make sure specialty1 is set right
 		
-		// validate special grenade type
-		// AE 10-26-09: changed to concussion grenade
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		specialIndex = 70;
-		assert( level.tbl_weaponIDs[specialIndex]["reference"] == "concussion_grenade" ); // if this fails we need to change specialIndex
+		assert( level.tbl_weaponIDs[specialIndex]["reference"] == "concussion_grenade" ); 
 		if ( !isDefined( level.tbl_weaponIDs[special_grenade] ) )
 			special_grenade = specialIndex;
 		specialGrenadeType = level.tbl_weaponIDs[special_grenade]["reference"];
@@ -857,21 +769,18 @@ getCacDataGroup( cacRange, numClasses )
 		self.custom_class[i]["primary"] = getFullWeaponName( i, "primary", attachmentsDisabled );
 		self.custom_class[i]["secondary"] = getFullWeaponName( i, "secondary", attachmentsDisabled );
 		
-		// obtaining specialties, getting specialty reference strings
+		
 		self.custom_class[i]["specialties"] = [];
 		for ( j = 0; j < specialty.size; j++ )
 		{
 			storeSpecialtyData( self, i, specialty[j] );
 		}
-
-
 		self.custom_class[i]["classbonus"] = classbonus;
-
-		// builds the full special grenade reference string
-		self.custom_class[i]["special_grenade"] = level.tbl_weaponIDs[special_grenade]["reference"]+"_mp"; //tablelookup( "mp/statstable.csv", level.cac_numbering, special_grenade, level.cac_creference ) + "_mp";
-		self.custom_class[i]["special_grenade_count"] = level.tbl_weaponIDs[special_grenade]["count"]; //int( tablelookup( "mp/statstable.csv", level.cac_numbering, special_grenade, level.cac_ccount ) );
 		
-		// armor
+		self.custom_class[i]["special_grenade"] = level.tbl_weaponIDs[special_grenade]["reference"]+"_mp"; 
+		self.custom_class[i]["special_grenade_count"] = level.tbl_weaponIDs[special_grenade]["count"]; 
+		
+		
 		self.custom_class[i]["body"] = body;
 		self.custom_class[i]["head"] = head;
 		
@@ -879,21 +788,9 @@ getCacDataGroup( cacRange, numClasses )
 		self.custom_class[i]["primary_weapon_options"]   = self calcWeaponOptions( i, 0 );
 		self.custom_class[i]["secondary_weapon_options"] = self calcWeaponOptions( i, 1 );
 		self.cac_initialized = true;
-
-		/*
-		println( "\n ========== CLASS DEBUG INFO ========== \n" );
-		println( "Primary: "+self.custom_class[i]["primary"] );
-		println( "Secondary: "+self.custom_class[i]["secondary"] );
-		println( "Specialty1: "+self.custom_class[i]["specialty1"]+" - Group: "+self.custom_class[i]["specialty1_group"]+" - Count: "+self.custom_class[i]["specialty1_count"] );
-		println( "Specialty2: "+self.custom_class[i]["specialty2"] );
-		println( "Specialty3: "+self.custom_class[i]["specialty3"] );
-		println( "Specialty4: "+self.custom_class[i]["specialty4"] );
-		println( "Special Grenade: "+self.custom_class[i]["special_grenade"]+" - Count: "+self.custom_class[i]["special_grenade_count"] );
-		//println( "Primary Camo: "+attachmenttablelookup( level.cac_cname, level.cac_cint2, camo_num ) );
-		*/
+		
 	}
 }
-
 storeDefaultSpecialtyData( className, specialty )
 {
 	if ( !IsArray( specialty ) )
@@ -917,7 +814,6 @@ storeDefaultSpecialtyData( className, specialty )
 		}
 	}
 }
-
 storeSpecialtyData( player, class_index, specialty )
 {
 	if ( !IsArray( specialty ) )
@@ -932,7 +828,6 @@ storeSpecialtyData( player, class_index, specialty )
 		index = player.custom_class[class_index]["specialties"].size;
 		
 		player.custom_class[class_index]["specialties"][index] = SpawnStruct();
-
 		if ( IsString( specialty[i] ) )
 		{
 			player.custom_class[class_index]["specialties"][index].name			= specialty[i];
@@ -942,19 +837,17 @@ storeSpecialtyData( player, class_index, specialty )
 		}
 		else
 		{
-			player.custom_class[class_index]["specialties"][index].name			= level.tbl_PerkData[specialty[i]]["reference_full"]; //tablelookup( "mp/statstable.csv", level.cac_cstat, specialty1, level.cac_cimage );
-			player.custom_class[class_index]["specialties"][index].weaponref	= level.tbl_PerkData[specialty[i]]["reference"]; //tablelookup( "mp/statstable.csv", level.cac_cstat, specialty1, level.cac_creference );
-			player.custom_class[class_index]["specialties"][index].count		= level.tbl_PerkData[specialty[i]]["count"]; //int( tablelookup( "mp/statstable.csv", level.cac_cstat, specialty1, level.cac_ccount ) );
-			player.custom_class[class_index]["specialties"][index].group		= level.tbl_PerkData[specialty[i]]["group"]; //tablelookup( "mp/statstable.csv", level.cac_cstat, specialty1, level.cac_cgroup );
+			player.custom_class[class_index]["specialties"][index].name			= level.tbl_PerkData[specialty[i]]["reference_full"]; 
+			player.custom_class[class_index]["specialties"][index].weaponref	= level.tbl_PerkData[specialty[i]]["reference"]; 
+			player.custom_class[class_index]["specialties"][index].count		= level.tbl_PerkData[specialty[i]]["count"]; 
+			player.custom_class[class_index]["specialties"][index].group		= level.tbl_PerkData[specialty[i]]["group"]; 
 		}
 	}
 }
-
 isPerkGroup( perkName )
 {
 	return ( IsDefined( perkName ) && IsString( perkName ) );
 }
-
 getSlotForPerk( perkIndex )
 {
 	for ( i = 0; i < level.allowedPerks.size; i++ )
@@ -967,10 +860,8 @@ getSlotForPerk( perkIndex )
 			}
 		}
 	}
-
 	return 0;
 }
-
 setPerkIcon( classNum, specialtyNumber, perkIndex )
 {
 	if ( classNum < 0 )
@@ -978,23 +869,21 @@ setPerkIcon( classNum, specialtyNumber, perkIndex )
 		return;
 	}
 	
-	// this array is read from when perk icons are displayed on the screen (_globallogic.gsc - getPerks())
+	
 	if ( !IsDefined( self.custom_class[classNum]["specialty" + specialtyNumber] ) )
 	{
 		self.custom_class[classNum]["specialty" + specialtyNumber] = level.tbl_PerkData[ perkIndex ][ "reference_full" ];
 	}
 }
-
 validatePerkGroup( perkGroup, perkIndex, classNum )
 {
 	perks = StrTok( perkGroup, "|" );
-
 	if ( !isdefined( level.specialtyToPerkIndex ) )
 	{
 		level.specialtyToPerkIndex = [];
 	}
 		
-	// only count base perks - not perk pro - Perk Pros have a 'count' of 1
+	
 	if ( ( isDefined( level.tbl_PerkData[ perkIndex ]["count"] ) ) && ( level.tbl_PerkData[ perkIndex ]["count"] == 0 ) )
 	{
 		for ( i = 0; i < perks.size; i++ )
@@ -1012,7 +901,6 @@ validatePerkGroup( perkGroup, perkIndex, classNum )
 	
 	return perks;
 }
-
 validatePerk( perkIndex, perkSlotIndex, classNum, group )
 {
 	if ( !IsDefined( group ) )
@@ -1022,7 +910,7 @@ validatePerk( perkIndex, perkSlotIndex, classNum, group )
 	
 	if ( !isDefined( classNum ) )
 	{
-		classnum = -1; // invalid
+		classnum = -1; 
 	}
 	
 	perkGroup = undefined;
@@ -1038,15 +926,13 @@ validatePerk( perkIndex, perkSlotIndex, classNum, group )
 		setPerkIcon( classNum, specialtyNumber, perkIndex );
 		return validatePerkGroup( perkGroup, perkIndex, classNum );
 	}
-
-	// Return specialty_null
+	
 	perkIndex = level.perkReferenceToIndex[ "specialty_null" ];
 	perks = [];
 	perks[0] = "specialty_null";
 	setPerkIcon( classNum, specialtyNumber, perkIndex );
 	return perks;
 }
-
 validateKillStreak( killStreakIndex, killStreakSlotIndex )
 {
 	for ( i = 0; i < level.allowedKillStreak[ killStreakSlotIndex ].size; i++ )
@@ -1054,112 +940,75 @@ validateKillStreak( killStreakIndex, killStreakSlotIndex )
 		if ( killStreakIndex == level.allowedKillStreak[ killStreakSlotIndex ][ i ] )
 			return ( killStreakIndex );
 	}
-
 	return level.killStreakBaseValue;
 }
-
 logClassChoice( class, primaryWeapon, specialType, perks )
 {
 	if ( class == self.lastClass )
 		return;
-
 	self logstring( "choseclass: " + class + " weapon: " + primaryWeapon + " special: " + specialType );		
 	for( i=0; i<perks.size; i++ )
 		self logstring( "perk" + i + ": " + perks[i] );
 	
 	self.lastClass = class;
 }
-
-
-// distributes the specialties into the corrent slots; inventory, grenades, special grenades, generic specialties
 get_specialtydata( class_num, specialty, specialty_num )
 {
 	cac_reference	= specialty.name;
-	cac_weaponref	= specialty.weaponref;	// for inventory whos string ref is the weapon ref
+	cac_weaponref	= specialty.weaponref;	
 	cac_group		= specialty.group;
 	cac_count		= specialty.count;
 		
 	assertex( isdefined( cac_group ), "Missing "+specialty.name+"'s group name" );
 	
-	// the new professional pro that gives +1 to lethal and tactical grenades
+	
 	if( cac_reference == "specialty_twogrenades" && GetDvarInt( #"scr_game_perks" ) )
 	{
 		self.custom_class[class_num]["grenades_count"] = 2;
 		self.custom_class[class_num]["specialgrenades_count"] = 3;
 	}
-
-	// the old primary x3 and secondary x3 specialites, also deathstreaks
-	//// grenade classification and distribution ==================
-	//// if user selected 3 frags, then give 3 count, else always give 1
-	//if( cac_reference == "specialty_fraggrenade" && GetDvarInt( #"scr_game_perks" ) )
-	//{
-	//	self.custom_class[class_num]["grenades_count"] = cac_count;
-	//	return;
-	//}
-	//
-	//// if user selected 3 special grenades, then give 3 count to the selected special grenade type, else always give 1
-	//assertex( isdefined( self.custom_class[class_num]["special_grenade"] ) && isdefined( self.custom_class[class_num]["special_grenade_count"] ), "Special grenade missing from custom class loadout" );
-	//if( cac_reference == "specialty_specialgrenade" && GetDvarInt( #"scr_game_perks" ) )
-	//{
-	//	self.custom_class[class_num]["specialgrenades_count"] = cac_count;
-	//	return;
-	//}
-	//		
-	//// if user selected inventory items
-	//if( cac_group == "inventory" )
-	//{
-	//	if( GetDvarInt( #"scr_game_perks" ) )
-	//	{
-	//		// inventory distribution to action slot 3 - unique per class
-	//		assertex( isdefined( cac_count ) && isdefined( cac_weaponref ), "Missing "+specialty+"'s reference or count data" );
-	//		self.custom_class[class_num]["inventory"] = cac_weaponref;		// loads inventory into action slot 3
-	//		self.custom_class[class_num]["inventory_count"] = cac_count;	// loads ammo count
-	//	}
-	//	else
-	//	{
-	//		self.custom_class[class_num]["inventory"] = "";		
-	//		self.custom_class[class_num]["inventory_count"] = 0;
-	//	}
-	//}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	if ( cac_group == "specialty" )
 	{
 		self.specialty[self.specialty.size] = cac_reference;
 	}
 }
-
-/* interface function for code table lookup using class table data
-classtablelookup( get_col, with_col, with_data )
-{
-	return_value = tablelookup( "mp/classtable.csv", with_col, with_data, get_col );
-	assertex( isdefined( return_value ), "Data not found: "+get_col+" column, using "+with_data+" in the "+with_col+"th column. ");
-	return return_value;	
-}
-
-// interface function for code table lookup using weapon attachment table data
-attachmenttablelookup( get_col, with_col, with_data )
-{
-	return_value = tablelookup( "mp/attachmenttable.csv", with_col, with_data, get_col );
-	assertex( isdefined( return_value ), "Data not found: "+get_col+" column, using "+with_data+" in the "+with_col+"th column. ");
-	return return_value;	
-}
-
-// interface function for code table lookup using weapon stats table data
-statstablelookup( get_col, with_col, with_data )
-{
-	// with_data = the data from the table
-	// with_col = look in this column for the data
-	// get_col = once data found, return the value of get_col in the same row	
-	return_value = tablelookup( "mp/statstable.csv", with_col, with_data, get_col );
-	assertex( isdefined( return_value ), "Data not found: "+get_col+" column, using "+with_data+" in the "+with_col+"th column. ");
-	return return_value;
-}
-*/
-
-// clears all player's custom class variables, prepare for update with new stat data
 reset_specialty_slots( class_num )
 {
-	self.specialty = [];		// clear all specialties
+	self.specialty = [];		
 	self.custom_class[class_num]["inventory"] = "";
 	self.custom_class[class_num]["inventory_count"] = 0;
 	self.custom_class[class_num]["inventory_group"] = "";
@@ -1170,11 +1019,9 @@ reset_specialty_slots( class_num )
 	self.custom_class[class_num]["specialgrenades_count"] = 0;
 	self.custom_class[class_num]["specialgrenades_group"] = "";
 }
-
 blackboxClassChoice( primary, secondary, grenades, specialgrenades, equipment )
 {
 	spawnid = getplayerspawnid( self );
-
 	bbPrint( "mploadouts: spawnid %d body %s head %s primary %s secondary %s grenade %s special %s equipment %s",
 			spawnid,
 			self.cac_body_type,
@@ -1185,19 +1032,16 @@ blackboxClassChoice( primary, secondary, grenades, specialgrenades, equipment )
 			specialgrenades,
 			equipment
 		   );
-
 	for ( i = 0; i < self.killstreak.size; i++ )
 	{
 		bbPrint( "mpkillstreaks: spawnid %d name %s", spawnid, self.killstreak[i] );
 	}
-
 	perks = self GetPerks();
 	for ( i = 0; i < perks.size; i++ )
 	{
 		bbPrint( "mpspecialties: spawnid %d name %s", spawnid, perks[i] );
 	}
 }
-
 giveKillStreaks()
 {
 		if ( !isDefined( self.killstreak ) || !isDefined( self.killstreak[ 0 ] ) || !isDefined( self.killstreak[ 1 ] ) || !isDefined( self.killstreak[ 2 ] ) )
@@ -1207,8 +1051,7 @@ giveKillStreaks()
 		
 		assert( isDefined( self.killstreak[ 0 ] ) && isDefined( self.killstreak[ 1 ] ) && isDefined( self.killstreak[ 2 ] ) );
 }
-
-getFullCustomWeaponName( customClassNum, weaponSlot ) // weaponSlot should be 'primary' or 'secondary'
+getFullCustomWeaponName( customClassNum, weaponSlot ) 
 {
 	assertex( ( ( weaponSlot == "primary" ) || ( weaponSlot == "secondary" ) ), "weaponSlot should be primary or secondary" );
 	
@@ -1256,15 +1099,11 @@ getFullCustomWeaponName( customClassNum, weaponSlot ) // weaponSlot should be 'p
 	
 	return weaponName;
 }
-
-//------------------------------------------------------------------------------
-// self = player
-//------------------------------------------------------------------------------
 loadCustomGameModeClasses( team, class )
 {
 	if( isSubstr( class, "CLASS_CUSTOM" ) || isSubstr(class, "CLASS_PRESTIGE") )
 	{
-		// obtains the custom class number
+		
 		class_num = int( class[class.size-1] )-1;
 		if( -1 == class_num )
 			class_num = 9;
@@ -1291,14 +1130,11 @@ loadCustomGameModeClasses( team, class )
 		}
 	}
 	
-
 	assert( class_num >= 0 && class_num < 10 );
-
 	for( i = 0; i < 10; i ++ )
 	{
 		primary_grenade = getCustomClassLoadoutItem ( i, "primarygrenade" );
 		primary_num = getCustomClassLoadoutItem ( i, "primary" );
-
 		specialty = [];
 		specialty[0] = getCustomClassLoadoutItem ( i, "specialty1" );
 		specialty[1] = getCustomClassLoadoutItem ( i, "specialty2" );
@@ -1307,7 +1143,6 @@ loadCustomGameModeClasses( team, class )
 		body = getCustomClassLoadoutItem( i, "body" );
 		body = level.tbl_armor[ body ];
 		assert( IsDefined( body ) );
-
 		head = getCustomClassLoadoutItem( i, "head" );
 		head = level.tbl_armor[ head ];
 		assert( IsDefined( head ) );
@@ -1319,23 +1154,20 @@ loadCustomGameModeClasses( team, class )
 		self.custom_class[i]["player_render_options"]    = self calcPlayerOptions( i );
 		self.custom_class[i]["primary_weapon_options"]   = self calcWeaponOptions( i, 0 );
 		self.custom_class[i]["secondary_weapon_options"] = self calcWeaponOptions( i, 1 );
-
-		// builds the full primary grenade reference string
-		self.custom_class[i]["primary_grenades"] = level.tbl_weaponIDs[primary_grenade]["reference"]+"_mp"; //tablelookup( "mp/statstable.csv", level.cac_numbering, special_grenade, level.cac_creference ) + "_mp";
-		self.custom_class[i]["primary_grenades_count"] = 1; //int( tablelookup( "mp/statstable.csv", level.cac_numbering, special_grenade, level.cac_ccount ) );
+		
+		self.custom_class[i]["primary_grenades"] = level.tbl_weaponIDs[primary_grenade]["reference"]+"_mp"; 
+		self.custom_class[i]["primary_grenades_count"] = 1; 
 		
 		self.custom_class[i]["equipment_slot"] = level.tbl_weaponIDs[equipment]["reference"]+"_mp";
 		self.custom_class[i]["equipment_slot_count"] = level.tbl_weaponIDs[equipment]["count"];
-
 		for ( j = 0; j < specialty.size; j++ )
 		{
 			specialty[j] = validatePerk( specialty[j], j, i );
 		}
 		
 		classbonus = getCustomClassLoadoutItem( i, "classbonus" );
-
 		specialIndex = 70;
-		assert( level.tbl_weaponIDs[specialIndex]["reference"] == "concussion_grenade" ); // if this fails we need to change specialIndex
+		assert( level.tbl_weaponIDs[specialIndex]["reference"] == "concussion_grenade" ); 
 		if ( !isDefined( level.tbl_weaponIDs[special_grenade] ) )
 			special_grenade = specialIndex;
 		specialGrenadeType = level.tbl_weaponIDs[special_grenade]["reference"];
@@ -1361,43 +1193,34 @@ loadCustomGameModeClasses( team, class )
 		self.custom_class[i]["primary"] = getFullCustomWeaponName( i, "primary" );
 		self.custom_class[i]["secondary"] = getFullCustomWeaponName( i, "secondary" );
 		
-		// obtaining specialties, getting specialty reference strings
+		
 		self.custom_class[i]["specialties"] = [];
 		for ( j = 0; j < specialty.size; j++ )
 		{
 			storeSpecialtyData( self, i, specialty[j] );
 		}
-
 		self.custom_class[i]["classbonus"] = classbonus;
-
-		// builds the full special grenade reference string
-		self.custom_class[i]["special_grenade"] = level.tbl_weaponIDs[special_grenade]["reference"]+"_mp"; //tablelookup( "mp/statstable.csv", level.cac_numbering, special_grenade, level.cac_creference ) + "_mp";
-		self.custom_class[i]["special_grenade_count"] = level.tbl_weaponIDs[special_grenade]["count"]; //int( tablelookup( "mp/statstable.csv", level.cac_numbering, special_grenade, level.cac_ccount ) );
 		
-		// armor
+		self.custom_class[i]["special_grenade"] = level.tbl_weaponIDs[special_grenade]["reference"]+"_mp"; 
+		self.custom_class[i]["special_grenade_count"] = level.tbl_weaponIDs[special_grenade]["count"]; 
+		
+		
 		self.custom_class[i]["body"] = body;
 		self.custom_class[i]["head"] = head;
 		
 		self.cac_initialized = true;
-
-		// custom game mode class modifiers
+		
 		self.custom_class[i]["health"] = getCustomClassModifier( i, "health" );
 		self.custom_class[i]["healthRegeneration"] = getCustomClassModifier( i, "healthRegeneration" );
 		self.custom_class[i]["healthVampirism"] = getCustomClassModifier( i, "healthVampirism" );
-
 		self.custom_class[i]["movementSpeed"] = getCustomClassModifier( i, "movementSpeed" );
 		self.custom_class[i]["movementSprintSpeed"] = getCustomClassModifier( i, "movementSprintSpeed" );
-
 		self.custom_class[i]["damage"] = getCustomClassModifier( i, "damage" );
 		self.custom_class[i]["damageExplosive"] = getCustomClassModifier( i, "damageExplosive" );
 	}						  	
 							  	
 	return class_num;		  
 }			
-
-//------------------------------------------------------------------------------
-// self = player
-//------------------------------------------------------------------------------
 applyCustomClassModifiers()
 {
 	self maps\mp\gametypes\_customClasses::setMovementSpeedModifier();
@@ -1408,9 +1231,6 @@ applyCustomClassModifiers()
 		self.health = self.maxhealth;
 	}
 }
-
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 getRandomValidCustomClass( team, class )
 {
 	classList = [];
@@ -1418,7 +1238,7 @@ getRandomValidCustomClass( team, class )
 	{
 		classTeam = getcustomclassmodifier( i, "team" );
 		active = getcustomclassmodifier( i, "active" );
-		// add all valid (active and any or current team) classes to the classList array
+		
 		if( active > 0 && ( classTeam == 1 || ( classTeam == 2 && team == "axis" ) || ( classTeam == 3 && team == "allies" ) ) )
 		{
 			classList[ classList.size ] = "CLASS_CUSTOM" + (i+1);
@@ -1426,7 +1246,6 @@ getRandomValidCustomClass( team, class )
 	}
 	return array_randomize( classList )[0];
 }
-
 listWeaponAttachments( weaponName, player )
 {
 	if ( isSubStr( weaponName, "dw_mp" ) )
@@ -1459,7 +1278,6 @@ listWeaponAttachments( weaponName, player )
 	for ( currString = 0; currString < numSubStrings; currString++ )
 	{		
 		attachPoint = tableLookup( "mp/attachmenttable.csv", 4, subStrings[ currString ], 1 );
-
 		if ( attachPoint == "" )
 		{
 			continue;	
@@ -1482,14 +1300,10 @@ listWeaponAttachments( weaponName, player )
 	
 	return attachments;
 }
-
-
-
 initStaticWeaponsTime()
 {
 	self.staticWeaponsStartTime = getTime();
 }
-
 initWeaponAttachments( weaponName )
 {
 	if ( self is_bot() )
@@ -1504,9 +1318,7 @@ initWeaponAttachments( weaponName )
 	self.currWeaponItemIndex = getBaseWeaponItemIndex( weaponName );
 	
 	self.currentAttachments = listWeaponAttachments( weaponName, self );
-
 }
-
 isEquipmentAllowed( equipment )
 {
 	if ( GetDvarInt( #"scr_disable_equipment" ) )
@@ -1514,7 +1326,6 @@ isEquipmentAllowed( equipment )
 	
 	if( equipment == "" )
 		return false;
-
 	if ( equipment == "weapon_null_mp" )
 		return false;
 		
@@ -1533,26 +1344,19 @@ giveLoadout( team, class )
 	
 	self takeAllWeapons();	  	
 	
-	/*
-	if ( level.splitscreen )
-		primaryIndex = 0;
-	else
-		primaryIndex = self.pers["primary"];
-	*/
+	
 	
 	primaryIndex = 0;
 	
-	// initialize specialty array
+	
 	self.specialty = [];
 	self.killstreak = [];
 	
 	primaryWeapon = undefined;
 	
 	self notify( "give_map" );
-
-	//TODO - add melee weapon selection to the CAC stuff and default loadouts	
+	
 	self GiveWeapon( "knife_mp" );
-
 	if ( self maps\mp\gametypes\_copycat::copycat_in_use() )
 	{
 		self maps\mp\gametypes\_copycat::copycat_give_loadout();
@@ -1560,15 +1364,14 @@ giveLoadout( team, class )
 	else if( ( isSubstr( class, "CLASS_CUSTOM" ) || isSubstr(class, "CLASS_PRESTIGE") || maps\mp\gametypes\_customClasses::isUsingCustomGameModeClasses() ) )
 	{	
 		pixbeginevent("custom class");
-		// ============= custom class selected ==============
-		// gets custom class data from stat bytes
+		
+		
 		if( !( maps\mp\gametypes\_customClasses::isUsingCustomGameModeClasses() ) )
 		{
 			self cac_getdata();
-			// obtains the custom class number
+			
 			class_num = int( class[class.size-1] )-1;
-
-			//hacky patch to the system since when it was written it was never thought of that there could be 10 custom slots
+			
 			if( -1 == class_num )
 				class_num = 9;
 		}
@@ -1581,46 +1384,40 @@ giveLoadout( team, class )
 			}
 			class_num = self loadCustomGameModeClasses( team, class );
 		}
-
 		self.class_num = class_num;
 		
 		assertex( isdefined( self.custom_class[class_num]["primary"] ), "Custom class "+class_num+": primary weapon setting missing" );
 		assertex( isdefined( self.custom_class[class_num]["secondary"] ), "Custom class "+class_num+": secondary weapon setting missing" );
 		
-		// clear of specialty slots, repopulate the current selected class' setup
+		
 		self reset_specialty_slots( class_num );
 		
-		// Reset the count of the primary and special grenades (may be changed by the specialties)
+		
 		self.custom_class[class_num]["grenades"] = self.custom_class[class_num]["primary_grenades"];
 		self.custom_class[class_num]["grenades_count"] = self.custom_class[class_num]["primary_grenades_count"];
 		self.custom_class[class_num]["specialgrenades"] = self.custom_class[class_num]["special_grenade"];
 		self.custom_class[class_num]["specialgrenades_count"] = self.custom_class[class_num]["special_grenade_count"];
 		self.custom_class[class_num]["equipment"] = self.custom_class[class_num]["equipment_slot"];
 		self.custom_class[class_num]["equipment_count"] = self.custom_class[class_num]["equipment_slot_count"];
-
 		for ( i = 0; i < self.custom_class[class_num]["specialties"].size; i++ )
 		{
 			self get_specialtydata( class_num, self.custom_class[class_num]["specialties"][i], i );
 		}
 		
-		// set re-register perks to code
+		
 		self register_perks();
-		// at this stage, the specialties are loaded into the correct weapon slots, and special slots
-
+		
 		giveKillStreaks();
-
-		// set class bonus
+		
 		classbonus_data = tableLookup( "mp/classBonusTable.csv", 0, self.custom_class[class_num]["classbonus"], 1 );
-
 		specialties = StrTok( classbonus_data, "|" );
-
 		for ( i = 0; i < specialties.size; i++ )
 		{
 			self SetPerk( specialties[i] );
 		}
 		
-		// weapon override for round based gametypes
-		// TODO: if they switched to a sidearm, we shouldn't give them that as their primary!
+		
+		
 		if ( isDefined( self.pers["weapon"] ) && self.pers["weapon"] != "none" )
 			weapon = self.pers["weapon"];
 		else
@@ -1635,7 +1432,7 @@ giveLoadout( team, class )
 		else if ( GetDvarInt( #"scr_game_perks" ) == false )
 		{
 			classPrimaryAttachments = listWeaponAttachments( weapon, self );
-			if ( classPrimaryAttachments.size > 1 ) // warlord perk
+			if ( classPrimaryAttachments.size > 1 ) 
 			{
 				primaryAttachmentsAllowed = false;			
 			}
@@ -1648,7 +1445,6 @@ giveLoadout( team, class )
 		}
 		
 		sidearm = self.custom_class[class_num]["secondary"];
-
 		if ( GetDvarInt( #"scr_disable_attachments" ) )
 		{
 			weaponNum = getLoadoutItemFromDDLStats( class_num, "secondary" );
@@ -1658,16 +1454,14 @@ giveLoadout( team, class )
 		self GiveWeapon( sidearm, 0, int( self.custom_class[class_num]["secondary_weapon_options"] ) );
 		if ( self cac_hasSpecialty( "specialty_extraammo" ) )
 			self giveMaxAmmo( sidearm );
-
-		//If it is a pistol, don't play first raise anim
+		
 		if( maps\mp\gametypes\_weapons::isPistol( sidearm ) )
 			self setSpawnWeapon( sidearm );
 			
-		// give primary weapon
+		
 		primaryWeapon = weapon;
 		
 		assertex( isdefined( self.custom_class[class_num]["primary_weapon_options"] ), "Player's weapon options is not defined, it should be at least initialized to 0" );
-
 		primaryTokens = strtok( primaryWeapon, "_" );
 		self.pers["primaryWeapon"] = primaryTokens[0];
 		
@@ -1695,7 +1489,7 @@ giveLoadout( team, class )
 			self SetActionSlot( 4, "" );
 		}
 		
-		// give frag for all no matter what
+		
 		grenadeTypePrimary = self.custom_class[class_num]["grenades"]; 
 		if ( grenadeTypePrimary != "" && grenadeTypePrimary != "weapon_null_mp" )
 		{
@@ -1717,7 +1511,7 @@ giveLoadout( team, class )
 			self SetWeaponAmmoClip( level.weapons["frag"], 0 );
 		}
 		
-		// give special grenade
+		
 		grenadeTypeSecondary = self.custom_class[class_num]["specialgrenades"]; 
 		if ( grenadeTypeSecondary != "" && grenadeTypeSecondary != "weapon_null_mp")
 		{
@@ -1728,8 +1522,7 @@ giveLoadout( team, class )
 			self giveWeapon( grenadeTypeSecondary );
 			self SetWeaponAmmoClip( grenadeTypeSecondary, grenadeCount );
 		}
-
-		//give equipment
+		
 		equipment_weapon = self.custom_class[class_num]["equipment"];
 		
 		if ( isEquipmentAllowed( equipment_weapon ) )
@@ -1740,40 +1533,36 @@ giveLoadout( team, class )
 			
 			self SetActionSlot( 1, "weapon", equipment_weapon );
 		}
-
 		self.cac_body_type = self.custom_class[ class_num ][ "body" ];
 		self.cac_head_type = self maps\mp\gametypes\_armor::get_default_head();
 		self.cac_hat_type = "none";
-
 		self maps\mp\gametypes\_armor::set_player_model();
-
 		self initStaticWeaponsTime();
 		
 		self thread initWeaponAttachments( primaryWeapon );
-
 		self thread blackboxClassChoice( primaryWeapon, sidearm, grenadeTypePrimary, grenadeTypeSecondary, equipment_weapon );
 	}
 	else if ( self is_bot() )
 	{
 		pixbeginevent("bot");
 		self maps\mp\gametypes\_bot::bot_give_loadout();
-		pixendevent(); // "bot"
+		pixendevent(); 
 	}
 	else
 	{			
 		pixbeginevent("default class");
-		// ============= selected one of the default classes ==============
+		
 				
-		// load the selected default class's specialties
+		
 		assertex( isdefined(self.pers["class"]), "Player during spawn and loadout got no class!" );
 		selected_class = self.pers["class"];
 		
-		//println( "^5selected_class = " + selected_class );	
+		
 		
 		specialty_size = level.default_perk[selected_class].size;
 		
-		//println( "^5level.default_perk[selected_class].size = " + level.default_perk[selected_class].size );
-		//println( "^5specialty_size = " + specialty_size );	
+		
+		
 		
 		for( i = 0; i < specialty_size; i++ )
 		{
@@ -1782,9 +1571,8 @@ giveLoadout( team, class )
 		}
 		assertex( isdefined( self.specialty ) && self.specialty.size > 0, "Default class: " + self.pers["class"] + " is missing specialties " );
 		
-		// re-registering perks to code since perks are cleared after respawn in case if players switch classes
+		
 		self register_perks();
-
 		giveKillStreaks();
 		
 		if ( isdefined( self.pers["primary"] ) )
@@ -1792,8 +1580,8 @@ giveLoadout( team, class )
 			primaryIndex = self.pers["primary"];
 		}
 		
-		// weapon override for round based gametypes
-		// TODO: if they switched to a sidearm, we shouldn't give them that as their primary!
+		
+		
 		if ( isDefined( self.pers["weapon"] ) && self.pers["weapon"] != "none" )
 		{
 			weapon = self.pers["weapon"];
@@ -1803,32 +1591,26 @@ giveLoadout( team, class )
 			weapon = level.classWeapons[team][class][primaryIndex];
 		}
 		
-		// give sidearm
+		
 		sidearm = level.classSidearm[team][class];
-		// AE 10-22-09: added the check to make sure the sidearm exists (did this for the larry's)
+		
 		if ( sidearm != "" && sidearm != "weapon_null_mp" )
 		{
 			println( "^5GiveWeapon( " + sidearm + " ) -- sidearm" );
 			self GiveWeapon( sidearm );
 			if ( self cac_hasSpecialty( "specialty_extraammo" ) )
 				self giveMaxAmmo( sidearm );
-
-			//If it is a pistol, don't play first raise anim
+			
 			if( maps\mp\gametypes\_weapons::isPistol( sidearm ) )
 				self setSpawnWeapon( sidearm );
 		}
-
-		// give primary weapon
+		
 		primaryWeapon = weapon;
-
 		primaryTokens = strtok( primaryWeapon, "_" );
 		self.pers["primaryWeapon"] = primaryTokens[0];
 		
-		// TODO: what is this doing here?? why do we want to not take the m14??
-		/*
-		if ( self.pers["primaryWeapon"] == "m14" )
-			self.pers["primaryWeapon"] = "m21";
-		*/
+		
+		
 	
 		println( "^5GiveWeapon( " + weapon + " ) -- weapon" );
 		self GiveWeapon( weapon );
@@ -1836,30 +1618,13 @@ giveLoadout( team, class )
 			self giveMaxAmmo( weapon );
 			
 		self setSpawnWeapon( weapon );
-
-//		default classes do not support attachments currently
-//		secondaryWeapon = level.classItem[team][class]["type"];	
-//		// AE 10-22-09: added the check to make sure the secondaryWeapon exists (did this for the larry's)
-//		if ( secondaryWeapon != "" && secondaryWeapon != "weapon_null_mp" )
-//		{
-//println( "^5GiveWeapon( " + secondaryWeapon + " ) -- secondaryWeapon" );
-//			self GiveWeapon( secondaryWeapon );
-//			
-//			self setWeaponAmmoOverall( secondaryWeapon, level.classItem[team][class]["count"] );
-//			
-//			self SetActionSlot( 3, "weapon", secondaryWeapon );
-//			self SetActionSlot( 4, "" );
-//		}
-//		else
-//		{
-			//The action slot still needs to be initialized even if we're not supporting attachments in the default classes, or the player
-			//won't be able to use attachments on weapons they pick up.
+			
+			
 			self SetActionSlot( 3, "altMode" );
 			self SetActionSlot( 4, "" );
-//		}
 		
 		grenadeTypePrimary = level.classGrenades[class]["primary"]["type"];
-		// AE 10-22-09: added the check to make sure the grenadeTypePrimary exists (did this for the larry's)
+		
 		if ( grenadeTypePrimary != "" && grenadeTypePrimary != "weapon_null_mp" )
 		{
 			grenadeCount = level.classGrenades[class]["primary"]["count"];
@@ -1871,19 +1636,17 @@ println( "^5GiveWeapon( " + grenadeTypePrimary + " ) -- grenadeTypePrimary" );
 		}
 		
 		grenadeTypeSecondary = level.classGrenades[class]["secondary"]["type"];
-		// AE 10-22-09: added the check to make sure the grenadeTypePrimary exists (did this for the larry's)
+		
 		if ( grenadeTypeSecondary != "" && grenadeTypeSecondary != "weapon_null_mp" )
 		{
 			grenadeCount = level.classGrenades[class]["secondary"]["count"];
 	
 			self setOffhandSecondaryClass( grenadeTypeSecondary );
-
 println( "^5GiveWeapon( " + grenadeTypeSecondary + " ) -- grneadeTypeSecondary" );
 			self giveWeapon( grenadeTypeSecondary );
 			self SetWeaponAmmoClip( grenadeTypeSecondary, grenadeCount );
 		}
-
-		//give equipment
+		
 		equipment_weapon = level.default_equipment[ class ][ "type" ];
 		if ( isEquipmentAllowed( equipment_weapon ) )
 		{
@@ -1893,56 +1656,25 @@ println( "^5GiveWeapon( " + grenadeTypeSecondary + " ) -- grneadeTypeSecondary" 
 			
 			self SetActionSlot( 1, "weapon", equipment_weapon );
 		}
-
 		self.cac_body_type = level.default_armor[class]["body"];
 		self.cac_head_type = self maps\mp\gametypes\_armor::get_default_head();
 		self.cac_hat_type = "none";
 		
 		self maps\mp\gametypes\_armor::set_player_model();
-
 		self initStaticWeaponsTime();
 		
 		self thread initWeaponAttachments( primaryWeapon );
-
 		self thread blackboxClassChoice( primaryWeapon, sidearm, grenadeTypePrimary, grenadeTypeSecondary, equipment_weapon );
-
-		pixendevent(); // "default class"
+		pixendevent(); 
 	}
-
-//  Vahn commented this out
-// 
-//	switch ( weaponClass( primaryWeapon ) )
-//	{
-//		case "rifle":
-//			self setMoveSpeedScale( 0.95 );
-//			break;
-//		case "pistol":
-//			self setMoveSpeedScale( 1.0 );
-//			break;
-//		case "mg":
-//			self setMoveSpeedScale( 0.875 );
-//			break;
-//		case "smg":
-//			self setMoveSpeedScale( 1.0 );
-//			break;
-//		case "spread":
-//			self setMoveSpeedScale( 1.0 );
-//			break;
-//		default:
-//			self setMoveSpeedScale( 1.0 );
-//			break;
-//	}
-
 	if( maps\mp\gametypes\_customClasses::isUsingCustomGameModeClasses() )
 	{
 		self applyCustomClassModifiers();
 	}
-
 	if( isDefined( self.movementSpeedModifier ) )
 	{
 		self setMoveSpeedScale( self.movementSpeedModifier * self getMoveSpeedScale() );
 	}
-
 	if ( isDefined( level.giveCustomLoadout ) )
 	{
 		spawnWeapon = self [[level.giveCustomLoadout]]();
@@ -1950,14 +1682,11 @@ println( "^5GiveWeapon( " + grenadeTypeSecondary + " ) -- grneadeTypeSecondary" 
 			self thread initWeaponAttachments( spawnWeapon );
 	}
 	
-	// cac specialties that require loop threads
+	
 	self cac_selector();
 	
 	pixendevent();
 }
-
-// sets the amount of ammo in the gun.
-// if the clip maxs out, the rest goes into the stock.
 setWeaponAmmoOverall( weaponname, amount )
 {
 	if ( isWeaponClipOnly( weaponname ) )
@@ -1972,13 +1701,11 @@ setWeaponAmmoOverall( weaponname, amount )
 		self setWeaponAmmoStock( weaponname, diff );
 	}
 }
-
 onPlayerConnecting()
 {
 	for(;;)
 	{
 		level waittill( "connecting", player );
-
 		if ( !level.oldschool )
 		{
 		if ( !isDefined( player.pers["class"] ) )
@@ -1995,8 +1722,6 @@ onPlayerConnecting()
 		player.reviveIds = [];
 	}
 }
-
-
 fadeAway( waitDelay, fadeDelay )
 {
 	wait waitDelay;
@@ -2004,56 +1729,41 @@ fadeAway( waitDelay, fadeDelay )
 	self fadeOverTime( fadeDelay );
 	self.alpha = 0;
 }
-
-
 setClass( newClass )
 {
 	self.curClass = newClass;
 }
-
-
-// ============================================================================================
-// =======																				=======
-// =======						 Create a Class Specialties 							=======
-// =======																				=======
-// ============================================================================================
-
 initPerkDvars()
 {
-	level.cac_armorpiercing_data = cac_get_dvar_int( "perk_armorpiercing", "40" ) / 100;// increased bullet damage by this %
-	level.cac_bulletdamage_data = cac_get_dvar_int( "perk_bulletDamage", "35" );		// increased bullet damage by this %
-	level.cac_fireproof_data = cac_get_dvar_int( "perk_fireproof", "95" );				// reduced flame damage by this %
-	level.cac_armorvest_data = cac_get_dvar_int( "perk_armorVest", "80" );				// multipy damage by this %	
-	level.cac_explosivedamage_data = cac_get_dvar_int( "perk_explosiveDamage", "25" );	// increased explosive damage by this %
-	level.cac_flakjacket_data = cac_get_dvar_int( "perk_flakJacket", "35" );			// explosive damage is this % of original
-	level.cac_flakjacket_hardcore_data = cac_get_dvar_int( "perk_flakJacket_hardcore", "9" );	// explosive damage is this % of original for hardcore
+	level.cac_armorpiercing_data = cac_get_dvar_int( "perk_armorpiercing", "40" ) / 100;
+	level.cac_bulletdamage_data = cac_get_dvar_int( "perk_bulletDamage", "35" );		
+	level.cac_fireproof_data = cac_get_dvar_int( "perk_fireproof", "95" );				
+	level.cac_armorvest_data = cac_get_dvar_int( "perk_armorVest", "80" );				
+	level.cac_explosivedamage_data = cac_get_dvar_int( "perk_explosiveDamage", "25" );	
+	level.cac_flakjacket_data = cac_get_dvar_int( "perk_flakJacket", "35" );			
+	level.cac_flakjacket_hardcore_data = cac_get_dvar_int( "perk_flakJacket_hardcore", "9" );	
 }
-
-// CAC: Selector function, calls the individual cac features according to player's class settings
-// Info: Called every time player spawns during loadout stage
 cac_selector()
 {
 	self thread maps\mp\_tacticalinsertion::postLoadout();
 	
 	perks = self.specialty;
-
 	self.detectExplosives = false;
 	for( i=0; i<perks.size; i++ )
 	{
 		perk = perks[i];
-		// run scripted perk that thread loops
+		
 		if( perk == "specialty_detectexplosive" )
 			self.detectExplosives = true;
 	}
 	
 	maps\mp\gametypes\_weaponobjects::setupBombSquad();
-
-	//self.canreviveothers = false;
-	//if (cac_hasSpecialty( "specialty_pistoldeath" ) )
-	//{
+	
+	
+	
 		self.canreviveothers = true;
 		maps\mp\_laststand::setupRevive();
-	//}
+	
 }
 	
 register_perks()
@@ -2063,9 +1773,8 @@ register_perks()
 	for( i=0; i<perks.size; i++ )
 	{
 		perk = perks[i];
-
-		// TO DO: ask code to register the inventory perks and null perk
-		// not registering inventory and null perks to code
+		
+		
 		if ( perk == "specialty_null" || isSubStr( perk, "specialty_weapon_" ) || perk == "weapon_null" )
 			continue;
 			
@@ -2075,18 +1784,12 @@ register_perks()
 		self setPerk( perk );
 	}
 	
-	/#
-	maps\mp\gametypes\_dev::giveExtraPerks();
-	#/
+	
 }
-
-// returns dvar value in int
 cac_get_dvar_int( dvar, def )
 {
 	return int( cac_get_dvar( dvar, def ) );
 }
-
-// dvar set/fetch/check
 cac_get_dvar( dvar, def )
 {
 	if ( getdvar( dvar ) != "" )
@@ -2099,81 +1802,51 @@ cac_get_dvar( dvar, def )
 		return def;
 	}
 }
-
-// CAC: Selected feature check function, returns boolean if a specialty is selected by the current class
-// Info: Called on "player" as self, "feature" parameter is a string reference of the specialty in question
 cac_hasSpecialty( perk_reference )
 {
 	return_value = self hasPerk( perk_reference );
 	return return_value;
 	
-	/*
-	perks = self.specialty;
-	for( i=0; i<perks.size; i++ )
-	{
-		perk = perks[i];
-		if( perk == perk_reference )
-			return true;
-	}
-	return false;
-	*/
+	
 }
-
 cac_modified_vehicle_damage( victim, attacker, damage, meansofdeath, weapon, inflictor )
 {
-	// skip conditions
+	
 	if( !isdefined( victim) || !isdefined( attacker ) || !isplayer( attacker ) )
 		return damage;
 	if( !isdefined( damage ) || !isdefined( meansofdeath ) || !isdefined( weapon ) )
 		return damage;
-
 	old_damage = damage;
 	final_damage = damage;
-
-	// Perk version
+	
 	
 	if( attacker cac_hasSpecialty( "specialty_bulletdamage" ) && isPrimaryDamage( meansofdeath ) )
 	
-	// if( issubstr( weapon, "_hp_" ) && isPrimaryDamage( meansofdeath ) )
+	
 	
 	{
 		final_damage = damage*(100+level.cac_bulletdamage_data)/100;
-		/#
-		if ( GetDvarInt( #"scr_perkdebug") )
-		println( "Perk/> " + attacker.name + "'s bullet damage did extra damage to vehicle" );
-		#/
+		
 	}
-
 	else if( attacker cac_hasSpecialty( "specialty_explosivedamage" ) && isPlayerExplosiveWeapon( weapon, meansofdeath )  )
 	{
 		final_damage = damage*(100+level.cac_explosivedamage_data)/100;
-		/#
-		if ( GetDvarInt( #"scr_perkdebug") )
-		println( "Perk/> " + attacker.name + "'s explosive damage did extra damage to vehicle" );
-		#/
+		
 	}
 	else
 	{
 		final_damage = old_damage;
 	}	
 	
-	// debug
-	/#
-	if ( GetDvarInt( #"scr_perkdebug") )
-	println( "Perk/> Damage Factor: " + final_damage/old_damage + " - Pre Damage: " + old_damage + " - Post Damage: " + final_damage );
-	#/
 	
-	// return unchanged damage
+	
+	
+	
 	return int( final_damage );
 }
-
-// CAC: Weapon Specialty: Increased bullet damage feature
-// CAC: Weapon Specialty: Armor Vest feature
-// CAC: Weapon Specialty: Flak Jacket feature
-// CAC: Ability: Increased explosive damage feature
 cac_modified_damage( victim, attacker, damage, meansofdeath, weapon, inflictor, hitloc )
 {
-	// skip conditions
+	
 	if( !isdefined( victim) || !isdefined( attacker ) || !isplayer( attacker ) || !isplayer( victim ) )
 		return damage;
 	if( !isdefined( damage ) || !isdefined( meansofdeath ) )
@@ -2186,79 +1859,52 @@ cac_modified_damage( victim, attacker, damage, meansofdeath, weapon, inflictor, 
 	old_damage = damage;
 	final_damage = damage;
 	
-	/* Cases =======================
-	attacker - bullet damage
-		victim - none
-		victim - armor
-	attacker - explosive damage
-		victim - none
-		victim - armor
-	attacker - none
-		victim - none
-		victim - armor
-	===============================*/
-	
-	// if attacker has bullet damage then increase bullet damage
-	// Perk version
 	
 	
-	// Attachment version
-	//if( isplayer( attacker ) && issubstr( weapon, "_hp_" ) && isPrimaryDamage( meansofdeath ) )  
+	
+	
+	
+	
+	
+	
 	
 	if( ( isplayer( attacker ) && attacker cac_hasSpecialty( "specialty_bulletdamage" ) ) && isPrimaryDamage( meansofdeath ) )
 	{
-		// if victim has armor then do not change damage, it is cancelled out, else damage is increased
-
+		
 		if( isdefined( victim ) && isPlayer( victim ) && victim cac_hasSpecialty( "specialty_armorvest" ) && !isHeadDamage( hitloc ) )
 		{
 			final_damage = old_damage;
-			/#
-			if ( GetDvarInt( #"scr_perkdebug") )
-			println( "Perk/> " + victim.name + "'s armor countered " + attacker.name + "'s increased bullet damage" );
-			#/
+			
 		}
 		else
 		{
 			final_damage = damage*(100+level.cac_bulletdamage_data)/100;
-			/#
-			if ( GetDvarInt( #"scr_perkdebug") )
-			println( "Perk/> " + attacker.name + "'s bullet damage did extra damage to " + victim.name );
-			#/
+			
 		}
 	}
 	else if( victim cac_hasSpecialty( "specialty_armorvest" ) && isPrimaryDamage( meansofdeath ) && !isHeadDamage( hitloc ) )
 	{	
-		//If victim has body armor, reduce the damage by the cac armor vest value as a percentage
+		
 		final_damage = damage*(level.cac_armorvest_data *.01);
-		/#
-			if ( GetDvarInt( #"scr_perkdebug") )
-				println( "Perk/> " + attacker.name + "'s bullet damage did less damage to " + victim.name );
-		#/
-
+		
 	}
 	else if ( victim cac_hasSpecialty ("specialty_fireproof") && isFireDamage( weapon, meansofdeath ) )
 	{
 		level.cac_fireproof_data = cac_get_dvar_int( "perk_fireproof", level.cac_fireproof_data );
 		
 		final_damage = damage*((100-level.cac_fireproof_data)/100);
-		/#
-		if ( GetDvarInt( #"scr_perkdebug") )
-		println( "Perk/> " + attacker.name + "'s flames did less damage to " + victim.name );
-		#/
+		
 	}
 	else if( attacker cac_hasSpecialty( "specialty_explosivedamage" ) && isPlayerExplosiveWeapon( weapon, meansofdeath ) )
 	{
 		final_damage = damage*(100+level.cac_explosivedamage_data)/100;
-		/#
-		if ( GetDvarInt( #"scr_perkdebug") )
-		println( "Perk/> " + attacker.name + "'s explosive damage did extra damage to " + victim.name );
-		#/
+		
 	}
 	else if (victim cac_hasSpecialty( "specialty_flakjacket" ) && ( !isdefined( inflictor.stucktoplayer ) || inflictor.stucktoplayer != victim ) && meansofdeath != "MOD_PROJECTILE"  && weapon != "briefcase_bomb_mp" && weapon != "tabun_gas_mp" && weapon != "concussion_grenade_mp" && weapon != "flash_grenade_mp" && weapon != "willy_pete_mp" )
 	{
 		if ( isExplosiveDamage( meansofdeath, weapon ) || isSubStr( weapon, "explodable_barrel" ) || isSubStr( weapon, "destructible_car" ))
 		{
-			// put these back in to make FlakJacket a perk again (for easy tuning of system when not body type specfic)
+			
 			level.cac_flakjacket_data = cac_get_dvar_int( "perk_flakJacket", level.cac_flakjacket_data );
 			if( level.hardcoreMode )
 			{
@@ -2282,45 +1928,26 @@ cac_modified_damage( victim, attacker, damage, meansofdeath, weapon, inflictor, 
 					}
 				}
 			}
-
 			final_damage = int( old_damage * ( level.cac_flakjacket_data / 100 ) );
-
-			/#
-			if ( getdvarint("scr_perkdebug") )
-			println( "Perk/> " + victim.name + "'s flak jacket decreased " + attacker.name + "'s grenade damage" );
-			#/
+			
 		}		
 	}
 	else
 	{	
 		final_damage = old_damage;
 	}
-
 	if ( GetDvar( #"scr_disable_cac_2" ) == "" )
 	{
 		final_damage = victim maps\mp\gametypes\_armor::get_armor_damage( meansofdeath, weapon, hitloc, final_damage );
 	}
-
-	/#
-		victim.cac_debug_damage_type = tolower( meansofdeath );
-		victim.cac_debug_original_damage = old_damage;
-		victim.cac_debug_final_damage = final_damage;
-		victim.cac_debug_location = tolower( hitloc );
-		victim.cac_debug_weapon = tolower( weapon );
-		victim.cac_debug_range = int( Distance( attacker.origin, victim.origin ) );
-	#/
 	
-	// debug
-	/#
-	if ( GetDvarInt( #"scr_perkdebug") )
-	println( "Perk/> Damage Factor: " + final_damage/old_damage + " - Pre Damage: " + old_damage + " - Post Damage: " + final_damage );
-	#/
 	
-	// return unchanged damage
+	
+	
+	
+	
 	return int( final_damage );
 }
-
-// including grenade launcher, grenade, bazooka, betty, satchel charge
 isExplosiveDamage( meansofdeath, weapon )
 {
 	explosivedamage = "MOD_GRENADE MOD_GRENADE_SPLASH MOD_PROJECTILE_SPLASH MOD_EXPLOSIVE";
@@ -2329,27 +1956,21 @@ isExplosiveDamage( meansofdeath, weapon )
 		return true;
 	return false;
 }
-
-// if primary weapon damage
 isPrimaryDamage( meansofdeath )
 {
-	// including pistols as well since sometimes they share ammo
+	
 	if( meansofdeath == "MOD_RIFLE_BULLET" || meansofdeath == "MOD_PISTOL_BULLET" )
 		return true;
 	return false;
 }
-
 isFireDamage( weapon, meansofdeath )
 {
 	if ( ( isSubStr( weapon, "flame" ) || isSubStr( weapon, "napalmblob_" ) || isSubStr( weapon, "napalm_" ) ) && ( meansofdeath == "MOD_BURNED" || meansofdeath == "MOD_GRENADE" || meansofdeath == "MOD_GRENADE_SPLASH" ) )
 		return true;
-
 	if( GetSubStr( weapon, 0, 3 ) == "ft_" )
 		return true;
-
 	return false;
 }
-
 isPlayerExplosiveWeapon( weapon, meansofdeath )
 {
 	if ( !isExplosiveDamage( meansofdeath, weapon ) )
@@ -2358,14 +1979,13 @@ isPlayerExplosiveWeapon( weapon, meansofdeath )
 	if ( weapon == "artillery_mp" || weapon == "airstrike_mp" || weapon == "napalm_mp" || weapon == "mortar_mp" || weapon == "hind_ffar_mp" || weapon == "cobra_ffar_mp" )
 		return false;
 	
-	// no tank main guns
+	
 	if ( issubstr(weapon, "turret" ) )
 		return false;
 	
 	return true;
 }
-
 isHeadDamage( hitloc )
 {
 	return ( hitloc == "helmet" || hitloc == "head" || hitloc == "neck" );
-}
+} 

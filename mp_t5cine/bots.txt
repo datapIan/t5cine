@@ -1,0 +1,10 @@
+Red
+Green
+Yellow
+Blue
+Cyan
+Pink
+White
+Black
+Ally
+Enemy
