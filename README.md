@@ -1,20 +1,41 @@
-# *t5cine - A Black Ops Cinematic Mod* <!-- omit in toc -->
-⚠️ Note: This mod isn't in alpha stage... it doesn't do anything yet,
+# *t5cine*
+<img src="https://images6.alphacoders.com/670/670143.jpg" alt="screenshot" height="250px" width="400px" align="right"/>
 
-**A GSC modification for t5 to create cinematics.**
+**A Port of [Sass' Cinematic Mod](https://github.com/sortileges/iw4cine) to Call of Duty Black Ops 1**
 
-- [Installation](#installation)
-- [Command List](#command-list)
-- [To-Do List](#to-do-list)
-- [Credits](#credits)
+<div align="left">
+<a href="https://github.com/datapIan/t5cine/releases"><img src="https://img.shields.io/github/v/release/datapIan/t5cine?label=Latest%20Release&style=flat-square"></a>
+  <a href="https://github.com/datapIan/t5cine/releases""><img src="https://img.shields.io/github/downloads/datapIan/t5cine/total?style=flat-square"></a>
 
+<p align="left">
+  <a href="#requirements">Requirements</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#usage">Usage</a> •
+  <a href="#issues">Issues</a> •
+  <a href="#credits">Credits</a>
+</p>
+
+Sass' mod changed the way we made cinematics on Modern Warfare 2. I believed the same level of customization should be added to all the other games.
+
+This mod is missing actor functionality due to the game not having the right functions for it.
+
+<br/><br/>
+## Requirements
+
+In order to use this mod, you'll need a copy of Black Ops 1 with/without a client installed.
+
+It is recommended you use this mod with [Plutonium](https://plutonium.pw) as this is the client the mod was built on. Plus, some functions don't work on Steam BO1.
+
+<br/><br/>
 ## Installation
 
-Simply download the mod through [this link](https://github.com/4GlVE/t5cine/releases/latest). Scroll down to `Assets` and download `mp_t5cine.zip`.
+Simply download the mod through [this link](https://github.com/datapIan/t5cine/releases/latest). Scroll down and click on `Source code.zip` and download the file.
 
-Once the mod downloaded, open the ZIP file and drag the `mp_t5cine` folder into your `BO1/mods` folder. If the `mods` folder doesn't exist, create it.
+<img src="https://i.imgur.com/VABrvPE.png" alt="screenshot" height="230px" width="300px" align="right"/>
 
-```text
+Once the mod is downloaded, extract the ZIP file and run the install script to automatically install the mod to [Plutonium](https://plutonium.pw) or manually install it to the Steam mods folder.
+
+```
 C:/
 └── .../
     └── BO1/
@@ -22,41 +43,44 @@ C:/
             └── mp_t5cine
 ```
 
-Once this is done open your game, then click on the "Mods" tab. "mp_t5cine" should appear in the list; click on it once and then click on "Launch" to restart your game with the mod on.
+- [Plutonium](https://plutonium.pw) full path: `%localappdata%\Plutonium\storage\t5`
 
-## Command List
+Once this is done open your game, then click on the "Mods" tab. `mp_t5cine` should appear in the list; click on it once and then click on "Launch" to restart your game with the mod on.
 
-> These commands are set using the onPlayerCommand function, therefore will not show in the console as a dvar.
+<br/><br/>
+## Usage
 
-### Bot Commands <!-- omit in toc -->
-* `mvm_bot_spawn` - This command allows you to spawn a bot.
-* `mvm_bot_setup` - If you want to change the position of your bot, then this is the command you need. The bot will also respawn to its new position if it gets killed.
-* `mvm_bot_stare` - This command will make the bot look at the host.
- 
-### Misc Commands <!-- omit in toc -->
-* `about` - Prints credits and information on the screen.
-* `clone` - Spawns a clone of yourself
-* `clearbodies` - Deletes all dead bodies
-* `mvm_eb_close` - Toggles on/off close explosive bullets
+* Most commands in-game function the same way as they did in MW2, except for the toggling type commands: `about, clone, clearbodies, mvm_eb, and mvm_bot_holdgun`
+  
+  └── These commands are required to be typed as `command` followed by a 1. Example: `clearbodies 1`
+* BotSpawn command arguments are `class = ar, smg, lmg, shotgun, sniper`, `team = allies, axis`
+* BotModel command arguments are `SNIPER, SUPPORT, ASSAULT, RECON, SPECOPS, FLAMETHROWER`
+* BotWeapon command arugments are `weapon = weapon name (springfield_mp)`
+* BotKill command arguments are `mode = head, body, shotgun, fire`
+* EnvColors command arguments are the name of any zone, example: `mvm_env_colors mp_castle`
+* EnvFog command arguments are `startdist, halfdist, red, green, blue`, example: `100 1000 1 .2 .7`
+* EnvProp command arguments are models in the current map, common_mp, or a custom fastfile. If from a custom fastfile or another map, it must be precached!
 
-## To-Do List
-I know this mod is very bare bones and there is not much to it, but in time I will try to implement every part of Sass' mod into Black Ops.
+  └── ~~A list of common_mp xmodels can be found [here]().~~
+* EnvFx command arguments are fx in the current map, common_mp, or a custom fastile. If from a custom fastfile or another map, it must be precached!
+  
+  └── Additionally, the arguments must be typed as `folder/filename`, example: `misc/flare`.
+  
+  └── ~~A list of common_mp fx's can be found [here]().~~
+  
+<br/><br/>
+## Issues
+* ***Actors*** - Currently there is no support for actors and I don't think there ever will be.
+* ***Bots*** - Sometimes bots will change class after death. Bots will move a few inches after respawning.
+* ***Bot Model*** - Currently this command doesn't work properly.
+* ***EB*** - EB type cycles after respawning.
 
-You can only spawn one bot at a time, and I have not yet implemented a way to kill the bot via command.
-* Add the ability to differentiate between bot names for ease of use with commands.
-* Add the ability to spawn bots and choosing "class" and "team".
-* Add "kill" command.
-* Add "vision" command.
-* Add "bot model" command.
-* Add "hold gun" command.
-* Add "score" command. // Similar to "mvm_score"
-* Add "killstreak command. // Similar to "mvm_killstreak"
+### To report bugs or feature requests, please do so through [this](https://github.com/datapIan/t5cine/issues) link.
 
+<br/><br/>
 ## Credits
-**Sass:** *Wouldnt be doing this kind of stuff today if it wasn't for him. // Thank you for allowing me to use your code for my mod and everything else you've done for me! Seriously, all the kindness you've shown me the past years/recently is very appreciated.*
-* [Github](https://github.com/sortileges/iw4cine)
-* [Twitter](https://twitter.com/sasseries)
 
-**Antiga:** *Helped me convert and make functions for t5. // Thank you for expanding my knowledge of coding and everything else you've done for me! You also smell.*
-* [Github](https://github.com/mprust)
-* [Twitter](https://twitter.com/mp_rust)
+* [Antiga](https://github.com/mprust) - Helped with .gsc related questions.
+* [Expert](https://github.com/soexperttt) - :cat_kiss:
+* [Sass](https://github.com/sortileges) - Created the original MW2 Cinematic Mod.
+* [yoyo1love](https://github.com/yoyothebest) - :cat_kiss:
